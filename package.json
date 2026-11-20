@@ -1,0 +1,28 @@
+{
+  "name": "bloom-of-gratitude",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bloom of Gratitude — A digital bloom of gratitude for Karate Sensei Nguyễn Xuân Hải Âu.",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "qa": "node scripts/qa.mjs",
+    "qa:edge": "node scripts/qa-edge.mjs",
+    "qa:webkit": "node scripts/qa-webkit.mjs",
+    "art": "node scripts/generate-art.mjs",
+    "audio": "python scripts/generate_audio.py",
+    "og": "node scripts/generate-og.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "howler": "^2.2.4",
+    "swiper": "^12.0.2",
+    "three": "^0.181.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.56.1",
+    "vite": "^7.1.12"
+  }
+}

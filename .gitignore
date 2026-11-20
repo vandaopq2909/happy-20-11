@@ -1,0 +1,8 @@
+node_modules/
+dist/
+qa-artifacts/
+.DS_Store
+*.log
+.env
+.env.*
+scripts/diag*.mjs

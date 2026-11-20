@@ -1,0 +1,349 @@
+/* ==========================================================================
+   BLOOM OF GRATITUDE — ambient motion
+   Transform/opacity only, paused while a scene is off-screen.
+   ========================================================================== */
+
+@keyframes equalize {
+  0% {
+    transform: scaleY(0.35);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes preloader-line {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(360%);
+  }
+}
+
+@keyframes preloader-failsafe {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+@keyframes petal-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -10vh, 0) rotate(var(--r, 30deg));
+  }
+  8% {
+    opacity: 0.55;
+  }
+  35% {
+    transform: translate3d(26px, 34vh, 0) rotate(calc(var(--r, 30deg) + 110deg));
+  }
+  65% {
+    opacity: 0.46;
+    transform: translate3d(-22px, 68vh, 0) rotate(calc(var(--r, 30deg) + 230deg));
+  }
+  92% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(30px, 112vh, 0) rotate(calc(var(--r, 30deg) + 360deg));
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes aurora-drift-one {
+  0% {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(9%, 7%, 0) scale(1.15);
+  }
+}
+
+@keyframes aurora-drift-two {
+  0% {
+    transform: translate3d(4%, 2%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-7%, -5%, 0) scale(0.94);
+  }
+}
+
+@keyframes gift-halo {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+@keyframes orbit-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-5px) scale(1.2);
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(19px);
+    opacity: 0;
+  }
+}
+
+@keyframes blossom-open {
+  0% {
+    opacity: 0;
+    transform: scale(0.08) rotate(-22deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.12) rotate(3deg);
+  }
+  78% {
+    transform: scale(0.96) rotate(-1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes branch-sway {
+  0% {
+    transform: rotate(-0.35deg) translate3d(-2px, 0, 0);
+  }
+  100% {
+    transform: rotate(0.55deg) translate3d(3px, -2px, 0);
+  }
+}
+
+@keyframes firefly {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  25% {
+    opacity: 0.8;
+  }
+  45% {
+    transform: translate3d(13px, -18px, 0) scale(1);
+  }
+  70% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-7px, -42px, 0) scale(0.5);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(3px, -9px, 0) rotate(calc(var(--r, 0deg) + 12deg));
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blossom-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ending-bloom-turn {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes gift-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.08);
+  }
+  18% {
+    opacity: 0.95;
+  }
+  55% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(9);
+  }
+}
+
+@keyframes halo-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+/* Do not burn cycles animating off-screen scenes. */
+.scene:not(.is-active) .petal-drift span,
+.scene:not(.is-active) .star-dust i,
+.scene:not(.is-active) .flower-fireflies span,
+.scene:not(.is-active) .gift-stage__halo,
+.scene:not(.is-active) .intro__aurora,
+.scene:not(.is-active) .ending-bg__halo,
+.scene:not(.is-active) .ending-bg__bloom,
+.scene:not(.is-active) .ending__blossom svg,
+.scene:not(.is-active) .sakura-layer--front {
+  animation-play-state: paused !important;
+}
+
+/* Deliberate low-power mode (set by JS when the device is constrained). */
+.app.is-low-power .petal-drift,
+.app.is-low-power .star-dust,
+.app.is-low-power .flower-fireflies,
+.app.is-low-power .intro__aurora,
+.app.is-low-power .garden-bg__mist,
+.app.is-low-power .ending-bg__halo {
+  opacity: 0.36;
+}
+
+.app.is-low-power .petal-drift span,
+.app.is-low-power .firefly,
+.app.is-low-power .star-dust i {
+  animation-duration: 28s;
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .petal-drift,
+  .star-dust,
+  .flower-fireflies,
+  .gift-stage__orbit,
+  .intro__rings,
+  .petal-canvas,
+  .celebration-canvas {
+    display: none !important;
+  }
+
+  .intro__aurora {
+    animation: none !important;
+  }
+
+  .blossom {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scene--flowers.is-entered .blossom {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .scene--flowers.is-entered .sakura-layer--front {
+    animation: none !important;
+  }
+
+  .ending__blossom svg,
+  .ending-bg__bloom,
+  .ending-bg__halo,
+  .gift-stage__halo {
+    animation: none !important;
+  }
+
+  .preloader__flower {
+    animation: none !important;
+  }
+
+  .preloader {
+    animation-delay: 0.4s;
+  }
+}
+
+.app.reduce-motion .petal-drift,
+.app.reduce-motion .star-dust,
+.app.reduce-motion .flower-fireflies,
+.app.reduce-motion .gift-stage__orbit,
+.app.reduce-motion .petal-canvas,
+.app.reduce-motion .celebration-canvas {
+  display: none !important;
+}
+
+.app.reduce-motion .blossom,
+.scene--flowers.is-entered.app.reduce-motion .blossom {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+
+.app.reduce-motion .ending__blossom svg,
+.app.reduce-motion .ending-bg__halo,
+.app.reduce-motion .gift-stage__halo {
+  animation: none !important;
+}
