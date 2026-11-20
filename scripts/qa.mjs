@@ -43,8 +43,16 @@ page.on('console', (message) => {
   if (message.type() === 'error') errors.push(`console: ${message.text()}`);
 });
 page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+const siteOrigin = new URL(baseUrl).origin;
 page.on('requestfailed', (request) => {
-  failedRequests.push(`${request.url()} â€” ${request.failure()?.errorText}`);
+  // YouTube may abort subtitle/tracking requests from its iframe; those are
+  // external to the site and should not mask a broken local asset.
+  try {
+    if (new URL(request.url()).origin !== siteOrigin) return;
+  } catch {
+    return;
+  }
+  failedRequests.push(`${request.url()} - ${request.failure()?.errorText}`);
 });
 
 async function shot(name) {

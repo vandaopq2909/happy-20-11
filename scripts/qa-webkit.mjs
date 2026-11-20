@@ -33,7 +33,15 @@ page.on('console', (message) => {
     console.log('WEBKIT', message.type(), message.text());
   }
 });
-page.on('requestfailed', (request) => failed.push(`${request.url()} — ${request.failure()?.errorText}`));
+const siteOrigin = new URL(baseUrl).origin;
+page.on('requestfailed', (request) => {
+  try {
+    if (new URL(request.url()).origin !== siteOrigin) return;
+  } catch {
+    return;
+  }
+  failed.push(`${request.url()} - ${request.failure()?.errorText}`);
+});
 
 const shot = async (name) => {
   await page.screenshot({ path: path.join(outDir, `webkit-${name}.png`) });

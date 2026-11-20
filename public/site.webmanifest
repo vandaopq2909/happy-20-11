@@ -1,15 +1,16 @@
 {
-  "name": "Bloom of Gratitude — Kính chúc thầy Nguyễn Xuân Hải Âu",
-  "short_name": "Bloom of Gratitude",
-  "description": "Món quà kỹ thuật số tri ân thầy Nguyễn Xuân Hải Âu — CLB Võ thuật HUIT, 20.11.2026.",
-  "start_url": "/",
+  "name": "Đóa Hoa Tri Ân — Kính chúc thầy Nguyễn Xuân Hải Âu",
+  "short_name": "Đóa Hoa Tri Ân",
+  "description": "Món quà kỹ thuật số tri ân thầy Nguyễn Xuân Hải Âu — KARATE HUIT, 20.11.2026.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#21162F",
   "theme_color": "#21162F",
   "lang": "vi",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "./favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

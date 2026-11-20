@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "description": "Bloom of Gratitude — A digital bloom of gratitude for Karate Sensei Nguyễn Xuân Hải Âu.",
   "scripts": {
     "dev": "vite --host 0.0.0.0",

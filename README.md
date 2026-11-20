@@ -9,7 +9,7 @@ Website là một câu chuyện tương tác gồm 6 màn, được thiết kế
 
 ## 1. Chạy dự án
 
-Yêu cầu: **Node.js 20+** và **pnpm** (hoặc npm).
+Yêu cầu: **Node.js ≥ 20.19** (khuyến nghị Node 22) và **pnpm 11** (hoặc npm).
 
 ```bash
 cd bloom-of-gratitude
@@ -147,9 +147,13 @@ bloom-of-gratitude/
 ├── pnpm-workspace.yaml
 ├── README.md
 ├── THIRD_PARTY_NOTICES.md
+├── .github/
+│   └── workflows/
+│       └── deploy.yml           # GitHub Pages build + deploy
 ├── public/
 │   ├── favicon.svg
-│   └── site.webmanifest
+│   ├── site.webmanifest
+│   └── .nojekyll
 ├── src/
 │   ├── main.js                 # boot, scene manager, transition, theme
 │   ├── utils.js
@@ -173,6 +177,7 @@ bloom-of-gratitude/
 │   │   ├── navigation.js
 │   │   └── lightbox.js
 │   └── data/
+│       ├── assets.js           # resolve assets theo BASE_URL (GitHub Pages)
 │       ├── config.js
 │       └── gallery.js
 ├── assets/
@@ -283,6 +288,7 @@ Kết quả lần kiểm thử gần nhất:
 - Không có tràn ngang; cả 6 scene có `scrollHeight === clientHeight` ở 390 × 844 và 414 × 896.
 - Album: đủ **12 ảnh thật, 4 nhóm**; chapter 2 × 2 hiển thị đầy đủ trên mobile; lightbox mở đúng ảnh và hiển thị trọn khung.
 - Ảnh chân dung thật hiển thị đúng trong Scene 3; nhãn “ẢNH MINH HOẠ” đã ẩn.
+- Build tĩnh đã được kiểm tra khi phục vụ dưới sub-path kiểu GitHub Pages (`/repo/`) trên cả Chromium và WebKit: không có request nội bộ nào thất bại.
 - WebGL khả dụng; fallback hoạt động khi WebGL bị tắt.
 - Reduced motion: nội dung vẫn hiện đầy đủ, lá thư tự mở và hiện ngay.
 - Lá thư: tự mở sau khi vào scene; đóng được bằng click vùng ngoài/nút Đóng; mở lại được bằng phong thư; không tự bật lại sau khi đã đóng.
@@ -317,22 +323,58 @@ pnpm og           # node scripts/generate-og.mjs
 
 ---
 
-## 13. Deploy
+## 13. Deploy lên GitHub Pages
 
-1. `pnpm build`
-2. Upload toàn bộ `dist/` lên hosting static (Netlify, Vercel, GitHub Pages, nginx...).
-3. Cấu hình domain gốc và HTTPS.
-4. Cập nhật các URL tuyệt đối trong `index.html`:
-   - `canonical`
-   - `og:url`
-   - `og:image` / `twitter:image`
-   - (tùy chọn) `scripts/generate-og.mjs` nếu tạo lại ảnh chia sẻ.
-5. Nếu deploy dưới **sub-path** thay vì domain gốc, cần đổi `base` trong `vite.config.js` và toàn bộ đường dẫn `/assets/...` (trong `config.js`, `gallery.js`, `index.html`, `fonts.css`). Cách đơn giản nhất là deploy ở domain gốc.
+Repo đã được chuẩn bị sẵn cho GitHub Pages project site (`https://<user>.github.io/<repo>/`):
+
+- `vite.config.js` dùng build base tương đối `./`, nên asset, font, ảnh, nhạc và favicon đều chạy đúng dưới sub-path.
+- `src/data/assets.js` resolve ảnh/nhạc theo `import.meta.env.BASE_URL`.
+- `.github/workflows/deploy.yml` build bằng Node 22 + pnpm 11 và deploy artifact `dist/`.
+- `public/.nojekyll` được copy vào bản build.
+
+### Các bước push & deploy
+
+1. Repo hiện tại: [`vandaopq2909/happy-20-11`](https://github.com/vandaopq2909/happy-20-11), nhánh `main`. **Không** commit `node_modules/`, `dist/`, `qa-artifacts/` (đã có trong `.gitignore`).
+2. Commit và push các thay đổi deploy:
+   ```bash
+   cd bloom-of-gratitude
+   git add .
+   git commit -m "Prepare GitHub Pages deployment"
+   git push origin main
+   ```
+3. Vào **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+4. Push một commit mới (hoặc chạy workflow **Deploy to GitHub Pages** thủ công ở tab Actions).
+5. Workflow sẽ in URL public. Với repo hiện tại:
+   - `https://vandaopq2909.github.io/happy-20-11/`
+   - Nếu đổi tên repo, workflow vẫn tự tính lại URL theo `GITHUB_REPOSITORY`.
+
+Workflow tự tính `SITE_URL` và truyền vào build để điền `canonical`, `og:url`, `og:image` đúng đường dẫn.
+
+### Custom domain
+
+1. Cấu hình custom domain trong **Settings → Pages**.
+2. Tạo repository variable **Settings → Secrets and variables → Actions → Variables**:
+   - Name: `SITE_URL`
+   - Value: `https://domain-cua-ban.example/` (có dấu `/` cuối cũng được).
+3. Chạy lại workflow. Nếu không có biến này, workflow dùng URL GitHub Pages tự động.
+
+### Build/deploy thủ công ở host khác
+
+```bash
+SITE_URL="https://your-domain.example/" pnpm build
+```
+
+Sau đó upload toàn bộ `dist/` lên host static. Nếu không truyền `SITE_URL`, canonical/OG sẽ dùng `http://localhost:5173/` (chỉ phù hợp để xem local).
+
+Lưu ý: nhạc nền cần Internet để tải YouTube; trang không cần backend.
+
+> Thư mục `dist/` trong file ZIP chỉ để xem trước/local. Khi push lên GitHub, workflow sẽ tự build lại và ghi `SITE_URL` đúng với repo của bạn; không cần commit `dist/`.
 
 Cấu hình máy chủ cần trả đúng MIME:
 - `.webp` → `image/webp`
 - `.mp3` → `audio/mpeg`
 - `.woff2` → `font/woff2`
+- `.webmanifest` → `application/manifest+json` (GitHub Pages tự xử lý)
 
 ---
 

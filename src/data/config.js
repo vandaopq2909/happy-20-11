@@ -1,3 +1,5 @@
+import { assetUrl } from './assets.js';
+
 /**
  * ĐÓA HOA TRI ÂN — central content configuration.
  *
@@ -29,7 +31,7 @@ export const siteConfig = {
     school: 'Trường Đại học Công Thương TP.HCM',
     quote: 'Người truyền cảm hứng, bản lĩnh và tinh thần võ đạo.',
     portrait: {
-      src: '/assets/images/teacher/sensei-portrait.webp',
+      src: assetUrl('assets/images/teacher/sensei-portrait.webp'),
       alt: 'Thầy Nguyễn Xuân Hải Âu trong áo polo vàng, cầm huy chương và giơ ngón cái trên sàn tập',
       filename: 'sensei-portrait.webp',
       isPlaceholder: false,
@@ -47,7 +49,7 @@ export const siteConfig = {
     title: 'Người Gieo Mầm Xanh — Hứa Kim Tuyền x Hoàng Dũng',
     volume: 0.38,
     // Offline / blocked-embed fallback. The primary source is always YouTube.
-    src: '/assets/audio/background-music.mp3',
+    src: assetUrl('assets/audio/background-music.mp3'),
     fallbackTitle: 'Piano dự phòng — Đóa Hoa Tri Ân',
   },
   letter: {
